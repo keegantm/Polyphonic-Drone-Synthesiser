@@ -68,6 +68,18 @@ public:
         //juce::Synthesiser::renderNextBlock(outputBuffer, incomingMidi, startSample, numSamples);
         juce::Synthesiser::renderNextBlock(outputBuffer, customBuffer, startSample, numSamples);
     }
+    
+    /*
+     Function to turn off any currently playing notes
+    */
+    void clearNotesAndStop()
+    {
+        playingNotes.clear();
+
+        for (int channel = 1; channel <= 16; ++channel) {
+            this->allNotesOff(channel, true);
+        }
+    }
 
 private:
     std::map<int, int> playingNotes = {};

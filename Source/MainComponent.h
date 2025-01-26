@@ -40,5 +40,7 @@ private:
     SynthAudioSource synthAudioSource;
     juce::MidiKeyboardComponent keyboardComponent;
     
+    juce::TextButton clearBtn;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

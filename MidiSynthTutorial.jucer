@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="azW26L" name="MidiSynthTutorial" projectType="guiapp" useAppConfig="0"
+<JUCERPROJECT id="azW26L" name="DroneSynth" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
-  <MAINGROUP id="f3w9Wy" name="MidiSynthTutorial">
+  <MAINGROUP id="f3w9Wy" name="DroneSynth">
     <GROUP id="{1303DD8D-0D44-805D-8312-049F128880F7}" name="Source">
       <FILE id="BQEC57" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="VF9HMK" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>

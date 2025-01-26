@@ -37,7 +37,6 @@ void SynthAudioSource::prepareToPlay (int samplesPerBlockExpected, double sample
 {
     //synth needs to know the sample rate for playing audio
     synth.setCurrentPlaybackSampleRate (sampleRate);
-    midiCollector.reset (sampleRate);
 }
 
 void SynthAudioSource::getNextAudioBlock (const juce::AudioSourceChannelInfo &bufferToFill)
@@ -46,7 +45,6 @@ void SynthAudioSource::getNextAudioBlock (const juce::AudioSourceChannelInfo &bu
 
     //we pull buffers of MIDI data from the MidiKeyboardState object.
     juce::MidiBuffer incomingMidi;
-    midiCollector.removeNextBlockOfMessages (incomingMidi, bufferToFill.numSamples);
     keyboardState.processNextMidiBuffer (incomingMidi, bufferToFill.startSample,
                                          bufferToFill.numSamples, true);
 
@@ -56,11 +54,10 @@ void SynthAudioSource::getNextAudioBlock (const juce::AudioSourceChannelInfo &bu
                            bufferToFill.startSample, bufferToFill.numSamples);
 }
 
-juce::MidiMessageCollector* SynthAudioSource::getMidiCollector()
+void SynthAudioSource::clearNotesAndStop()
 {
-    return &midiCollector;
+    synth.clearNotesAndStop();
 }
-
 
 void SynthAudioSource::releaseResources ()
 {

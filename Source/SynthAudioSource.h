@@ -28,12 +28,12 @@ public:
     void releaseResources () override;
     
     void setUsingSineWaveSound();
-    juce::MidiMessageCollector* getMidiCollector();
+    //juce::MidiMessageCollector* getMidiCollector();
+    
+    void clearNotesAndStop();
     
 private:
     juce::MidiKeyboardState& keyboardState;
-    //juce::Synthesiser synth;
     CustomSynth synth;
-    juce::MidiMessageCollector midiCollector;
 
 };

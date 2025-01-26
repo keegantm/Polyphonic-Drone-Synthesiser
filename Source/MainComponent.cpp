@@ -6,6 +6,14 @@ MainComponent::MainComponent()
       keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
     addAndMakeVisible (keyboardComponent);
+    
+    clearBtn.setButtonText(juce::String("Clear Drones"));
+    clearBtn.onClick = [this] ()
+    {
+        synthAudioSource.clearNotesAndStop();
+    };
+    addAndMakeVisible(clearBtn);
+
     setAudioChannels (0, 2);
 
     setSize (600, 160);
@@ -48,8 +56,27 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
-    auto area = getLocalBounds();
+    juce::FlexBox fb;
+    fb.flexWrap = juce::FlexBox::Wrap::wrap;
+    fb.justifyContent = juce::FlexBox::JustifyContent::center;
+    fb.alignContent = juce::FlexBox::AlignContent::center;
+    // Make the button smaller but flexible
+    juce::FlexItem clearBtnFlexItem = juce::FlexItem (clearBtn)
+                        .withWidth(100)
+                        .withHeight(100)
+                        .withMargin(juce::FlexItem::Margin (10.0f)) // Adds a margin of 10px on all sides
+                        .withAlignSelf(juce::FlexItem::AlignSelf::center); // Centers along the y-axis
+    fb.items.add(clearBtnFlexItem);
 
-    keyboardComponent.setBounds(area);
+    juce::FlexItem keyboardFlexItem =juce::FlexItem (keyboardComponent)
+                        .withMinWidth(400.0)
+                        .withHeight(100.0)
+                        .withFlex(1.0)  // Keyboard takes up the remaining space
+                        .withAlignSelf(juce::FlexItem::AlignSelf::center);
+    // Make the keyboard component fill the remaining space
+    fb.items.add(keyboardFlexItem);
+    
+    fb.performLayout (getLocalBounds());
+    //keyboardComponent.setBounds(area);
     
 }
