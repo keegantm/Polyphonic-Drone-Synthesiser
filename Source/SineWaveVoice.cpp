@@ -10,7 +10,9 @@
 
 #include "SineWaveVoice.h"
 
-SineWaveVoice::SineWaveVoice(){};
+SineWaveVoice::SineWaveVoice(int vId){
+    voiceId = vId;
+};
 
 SineWaveVoice::~SineWaveVoice(){};
 
@@ -24,7 +26,6 @@ bool SineWaveVoice::canPlaySound(juce::SynthesiserSound* sound)
 
 void SineWaveVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound*, int /*currentPitchWheelPosition*/)
 {
-    DBG("start note");
 
     currentAngle = 0.0;
     level = velocity * 0.15;
@@ -37,11 +38,28 @@ void SineWaveVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesi
     
 }
 
+//called by owning SynthAudioSource when we need this voice to stop
+void SineWaveVoice::stopNote (float /*velocity*/, bool allowTailOff)
+{
+    
+    if (allowTailOff)
+    {
+        if (tailOff == 0.0)
+            tailOff = 1.0;
+    }
+    else
+    {
+        clearCurrentNote();
+        angleDelta = 0.0;
+    }
+}
+
 void SineWaveVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
     //wave angle is not changing
     if (! juce::approximatelyEqual (angleDelta, 0.0))
     {
+        
         /*
         DBG("----------------------");
         DBG("angleDelta: " << angleDelta);
@@ -51,6 +69,7 @@ void SineWaveVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int 
         DBG("numSamples: " << numSamples);
         DBG("outputBuffer channels: " << outputBuffer.getNumChannels());
         */
+        
         if (tailOff > 0.0)
         {
             while (--numSamples >= 0)
@@ -96,21 +115,6 @@ void SineWaveVoice::renderNextBlock (juce::AudioSampleBuffer& outputBuffer, int 
                 ++startSample;
             }
         }
-    }
-}
-
-//called by owning SynthAudioSource when we need this voice to stop
-void SineWaveVoice::stopNote (float /*velocity*/, bool allowTailOff)
-{
-    if (allowTailOff)
-    {
-        if (tailOff == 0.0)
-            tailOff = 1.0;
-    }
-    else
-    {
-        clearCurrentNote();
-        angleDelta = 0.0;
     }
 }
 

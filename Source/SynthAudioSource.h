@@ -6,11 +6,12 @@
     Author:  Keegan Moseley
 
   ==============================================================================
-*/
+*/ 
 #pragma once
 #include <JuceHeader.h>
 #include "SineWaveVoice.h"
 #include "SineWaveSound.h"
+#include "CustomSynth.h"
 
 /*
  This outputs all of the audio from the synthesiser.
@@ -31,7 +32,8 @@ public:
     
 private:
     juce::MidiKeyboardState& keyboardState;
-    juce::Synthesiser synth;
+    //juce::Synthesiser synth;
+    CustomSynth synth;
     juce::MidiMessageCollector midiCollector;
 
 };

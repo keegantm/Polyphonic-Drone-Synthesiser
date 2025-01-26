@@ -6,7 +6,7 @@
     Author:  Keegan Moseley
 
   ==============================================================================
-*/
+*/ 
 
 #include "SynthAudioSource.h"
 
@@ -14,11 +14,15 @@ SynthAudioSource::SynthAudioSource(juce::MidiKeyboardState& keyState) : keyboard
 {
     //decide how many voices the synth can have
     for (auto i = 0; i < 4; ++i)
+    {
         DBG("Added voice");
-        synth.addVoice (new SineWaveVoice());
+        synth.addVoice (new SineWaveVoice(i));
+    }
     
     //define a sound for it to use to play each voice
     synth.addSound (new SineWaveSound());
+    
+    synth.setNoteStealingEnabled(false);
 }
 
 SynthAudioSource::~SynthAudioSource(){};

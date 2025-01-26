@@ -16,6 +16,7 @@
       <FILE id="dZYL7D" name="SineWaveVoice.cpp" compile="1" resource="0"
             file="Source/SineWaveVoice.cpp"/>
       <FILE id="RzE7Ld" name="SineWaveSound.h" compile="0" resource="0" file="Source/SineWaveSound.h"/>
+      <FILE id="OzP821" name="CustomSynth.h" compile="0" resource="0" file="Source/CustomSynth.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

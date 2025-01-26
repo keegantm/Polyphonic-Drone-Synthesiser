@@ -18,7 +18,7 @@
 class SineWaveVoice :   public juce::SynthesiserVoice
 {
 public:
-    SineWaveVoice();
+    SineWaveVoice(int vId);
     ~SineWaveVoice();
     
     bool canPlaySound(juce::SynthesiserSound* sound) override;
@@ -34,6 +34,7 @@ public:
     void pitchWheelMoved (int newPitchWheelValue) override;
     void controllerMoved (int controllerNumber, int newControllerValue) override;
     
+    int voiceId;
 private:
     //It needs to maintain the state of one of the voices of the synthesiser. For our sine wave, we need these data members:
     
@@ -45,4 +46,5 @@ private:
     double level = 0.0;
     //make the note have decay. 0 at the start of each note playing
     double tailOff = 0.0;
+
 };
