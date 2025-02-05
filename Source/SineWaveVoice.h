@@ -30,9 +30,12 @@ public:
 
     void stopNote (float /*velocity*/, bool allowTailOff) override;
     
+    void setLevel(float newLevel);
+    
     //================ Not implemented
     void pitchWheelMoved (int newPitchWheelValue) override;
     void controllerMoved (int controllerNumber, int newControllerValue) override;
+    
     
     int voiceId;
 private:

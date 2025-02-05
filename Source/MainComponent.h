@@ -39,8 +39,9 @@ private:
     juce::MidiKeyboardState keyboardState;
     SynthAudioSource synthAudioSource;
     juce::MidiKeyboardComponent keyboardComponent;
-    
+    juce::Slider synthVolumeSlider;
     juce::TextButton clearBtn;
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

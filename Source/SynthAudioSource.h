@@ -32,8 +32,10 @@ public:
     
     void clearNotesAndStop();
     
+    void setGain(float newGain);
+    
 private:
     juce::MidiKeyboardState& keyboardState;
     CustomSynth synth;
-
+    float gain {0};
 };

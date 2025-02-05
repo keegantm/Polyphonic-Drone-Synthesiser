@@ -28,7 +28,7 @@ void SineWaveVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesi
 {
 
     currentAngle = 0.0;
-    level = velocity * 0.15;
+    //level = velocity * 0.15;
     tailOff = 0.0;
     
     auto cyclesPerSecond = juce::MidiMessage::getMidiNoteInHertz (midiNoteNumber);
@@ -37,6 +37,12 @@ void SineWaveVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesi
     angleDelta = cyclesPerSample * 2.0 * juce::MathConstants<double>::pi;
     
 }
+
+void SineWaveVoice::setLevel(float newLevel)
+{
+    level = newLevel;
+}
+
 
 //called by owning SynthAudioSource when we need this voice to stop
 void SineWaveVoice::stopNote (float /*velocity*/, bool allowTailOff)

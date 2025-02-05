@@ -54,6 +54,18 @@ void SynthAudioSource::getNextAudioBlock (const juce::AudioSourceChannelInfo &bu
                            bufferToFill.startSample, bufferToFill.numSamples);
 }
 
+void SynthAudioSource::setGain(float newGain)
+{
+    gain = newGain;
+    
+    int numVoices = synth.getNumVoices();
+    for (int i = 0; i < numVoices; i++)
+    {
+        SineWaveVoice* voice = (SineWaveVoice*) synth.getVoice(i);
+        voice -> setLevel(newGain);
+    }
+}
+
 void SynthAudioSource::clearNotesAndStop()
 {
     synth.clearNotesAndStop();

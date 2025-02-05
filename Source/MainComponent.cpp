@@ -3,7 +3,8 @@
 //==============================================================================
 MainComponent::MainComponent()
     : synthAudioSource  (keyboardState),
-      keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
+      keyboardComponent (keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard),
+      synthVolumeSlider(juce::Slider::SliderStyle::LinearHorizontal, juce::Slider::TextEntryBoxPosition::NoTextBox)
 {
     addAndMakeVisible (keyboardComponent);
     
@@ -14,9 +15,20 @@ MainComponent::MainComponent()
     };
     addAndMakeVisible(clearBtn);
 
+    synthVolumeSlider.setRange(-60, 0);
+    synthVolumeSlider.onValueChange = [this] ()
+    {
+        //don't do this work on the audio thread
+        DBG("CHANGED");
+        float gain = juce::Decibels::decibelsToGain((float) synthVolumeSlider.getValue());
+        synthAudioSource.setGain(gain);
+    };
+    synthVolumeSlider.setValue(-20);
+    addAndMakeVisible(synthVolumeSlider);
+    
     setAudioChannels (0, 2);
 
-    setSize (600, 160);
+    setSize (600, 400);
     
     //need to grab focus of the timer after the app starts, so wait 400ms
     startTimer (400);
@@ -56,6 +68,7 @@ void MainComponent::paint (juce::Graphics& g)
 
 void MainComponent::resized()
 {
+    /*
     juce::FlexBox fb;
     fb.flexWrap = juce::FlexBox::Wrap::wrap;
     fb.justifyContent = juce::FlexBox::JustifyContent::center;
@@ -78,5 +91,39 @@ void MainComponent::resized()
     
     fb.performLayout (getLocalBounds());
     //keyboardComponent.setBounds(area);
+    */
+    // Outer FlexBox (Vertical Layout)
+    juce::FlexBox outerFlexBox;
+    outerFlexBox.flexDirection = juce::FlexBox::Direction::column;
+    outerFlexBox.justifyContent = juce::FlexBox::JustifyContent::center;
+    outerFlexBox.alignItems = juce::FlexBox::AlignItems::center;
+
+    // Inner FlexBox (Horizontal Layout for Stop Button & Keyboard)
+    juce::FlexBox innerFlexBox;
+    innerFlexBox.flexDirection = juce::FlexBox::Direction::row;
+    innerFlexBox.justifyContent = juce::FlexBox::JustifyContent::spaceBetween;
+    innerFlexBox.alignItems = juce::FlexBox::AlignItems::center;
+    innerFlexBox.items.add(juce::FlexItem(clearBtn)
+        .withWidth(100)
+        .withHeight(100)
+        .withMargin(juce::FlexItem::Margin(10.0f)));
+
+    innerFlexBox.items.add(juce::FlexItem(keyboardComponent)
+        .withFlex(1.0)  // Expands to fill remaining space
+        .withMinWidth(400.0)
+        .withHeight(100.0)
+        .withMargin(juce::FlexItem::Margin(10.0f)));
+
+    // Add inner FlexBox to outer FlexBox
+    outerFlexBox.items.add(juce::FlexItem(innerFlexBox)
+        .withFlex(1.0)  // Ensures it fills available width
+        .withWidth(getWidth()));
     
+    outerFlexBox.items.add(juce::FlexItem(synthVolumeSlider)
+        .withFlex(1.0)  // Ensures it fills available width
+        .withWidth(getWidth()));
+
+    // Perform layout
+    outerFlexBox.performLayout(getLocalBounds());
+
 }
